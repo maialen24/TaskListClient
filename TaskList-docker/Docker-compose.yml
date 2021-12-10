@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+
+  server:
+    # The keyword "build" will allow you to define
+    # the path to the Dockerfile to use to create the image
+    # that will allow you to execute the service.
+    # Here 'server/' corresponds to the path to the server folder
+    # that contains the Dockerfile to use.
+    build: .
+   # image: 'lightstreamer'
+
+    ports:
+      - 8085:8080
+
+  # Second service (container): the client.
+  # We use the keyword 'client' for the server.
+  client:
+
+    image: tasklist-lightstreamer
+
+    # The command to execute once the image is created.
+    # The following command will execute "python ./client.py".
+   # command: python ./client.py
+
+    # The keyword 'network_mode' is used to define the network type.
+    # Here we define that the container can access to the 'localhost' of the computer.
+    network_mode: host
+
+    # The keyword'depends_on' allows you to define whether the service
+    # should wait until other services are ready before launching.
+    # Here, we want the 'client' service to wait until the 'server' service is ready.
+    depends_on:
+      - server
